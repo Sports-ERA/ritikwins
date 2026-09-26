@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Live Stream Player">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#F4A340">
     <title>@ritikwins</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -492,11 +492,11 @@
             --bg-deep: #111712;
             --bg-gradient: linear-gradient(155deg, #111712 0%, #1a241b 54%, #101510 100%);
             --glass-bg: rgba(27, 37, 28, 0.92);
-            --glass-border: rgba(200, 244, 91, 0.2);
+            --glass-border: rgba(244, 163, 64, 0.22);
             --glass-shadow: 0 20px 54px -28px rgba(0, 0, 0, 0.9);
-            --accent-primary: #c8f45b;
-            --accent-glow: rgba(200, 244, 91, 0.23);
-            --accent-gradient: linear-gradient(110deg, #c8f45b, #89c63f);
+            --accent-primary: #f4a340;
+            --accent-glow: rgba(244, 163, 64, 0.26);
+            --accent-gradient: linear-gradient(110deg, #ffb347, #e97924);
             --text-primary: #f4f5ed;
             --text-secondary: #a4afa0;
         }
@@ -504,11 +504,11 @@
         body {
             padding: 2rem clamp(1rem, 4vw, 3.5rem);
             background-color: var(--bg-deep);
-            background-image: radial-gradient(ellipse at 50% -20%, rgba(119, 160, 75, 0.19), transparent 54%), var(--bg-gradient);
+            background-image: radial-gradient(ellipse at 50% -20%, rgba(194, 112, 42, 0.18), transparent 54%), var(--bg-gradient);
         }
 
         body::before {
-            background-image: linear-gradient(rgba(201, 231, 161, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 231, 161, 0.025) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(244, 163, 64, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(244, 163, 64, 0.025) 1px, transparent 1px);
             background-size: 56px 56px;
             mask-image: linear-gradient(to bottom, black, transparent 85%);
             animation: none;
@@ -517,19 +517,23 @@
         .container { max-width: 1180px; }
 
         .stream-header {
-            min-height: 188px;
+            min-height: 230px;
             padding: 2rem clamp(1.5rem, 4vw, 3.5rem);
             margin-bottom: 1.1rem;
             border-radius: 12px;
-            border-color: rgba(200, 244, 91, 0.18);
-            background: linear-gradient(105deg, rgba(34, 47, 32, 0.98) 0%, rgba(25, 39, 27, 0.96) 55%, rgba(37, 55, 31, 0.88) 100%);
+            border-color: rgba(244, 163, 64, 0.2);
+            background-color: #07131b;
+            background-image: linear-gradient(90deg, rgba(5, 17, 23, 0.92) 0%, rgba(5, 17, 23, 0.76) 48%, rgba(5, 17, 23, 0.42) 100%), url('https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1800&q=85');
+            background-size: cover;
+            background-position: center 46%;
             box-shadow: var(--glass-shadow);
         }
 
         .stream-header::before {
-            background: repeating-linear-gradient(90deg, transparent 0 72px, rgba(200, 244, 91, 0.045) 73px 74px);
+            background: repeating-linear-gradient(90deg, transparent 0 72px, rgba(244, 163, 64, 0.05) 73px 74px);
             animation: none;
             left: 0;
+            z-index: 0;
         }
 
         .stream-header::after {
@@ -539,45 +543,68 @@
             top: -55%;
             width: 1px;
             height: 210%;
-            background: rgba(200, 244, 91, 0.15);
+            background: rgba(244, 163, 64, 0.16);
             transform: rotate(24deg);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .stream-brand-copy {
+            position: relative;
+            z-index: 3;
+            display: block;
+            min-width: 0;
+            margin-left: 18%;
+            color: var(--text-primary);
+            text-decoration: none;
         }
 
         .stream-header h1 {
-            font-size: clamp(1.7rem, 4vw, 2.55rem);
+            font-size: 2.8rem;
             background: none;
             -webkit-text-fill-color: currentColor;
             color: var(--text-primary);
             letter-spacing: 0;
         }
 
+        .stream-brand-copy p {
+            margin-top: 0.6rem;
+            color: #d0d7dc;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            line-height: 1.65;
+        }
+
         #sports-scene {
             position: absolute;
-            z-index: 0;
-            top: 0;
-            right: 2%;
-            width: min(34%, 340px);
+            z-index: 1;
+            inset: 0;
+            width: 100%;
             height: 100%;
             pointer-events: none;
         }
 
         .live-badge {
+            position: relative;
+            z-index: 3;
+            margin-right: 1.5rem;
             border-radius: 4px;
             padding: 0.62rem 0.9rem;
-            background: rgba(200, 244, 91, 0.1);
-            color: var(--accent-primary);
-            border-color: rgba(200, 244, 91, 0.32);
-            box-shadow: none;
-            letter-spacing: 1.2px;
+            background: rgba(10, 20, 20, 0.9);
+            color: #f4f5ed;
+            border: 1px solid rgba(244, 163, 64, 0.75);
+            box-shadow: 0 0 20px rgba(244, 163, 64, 0.18);
+            letter-spacing: 0.04em;
         }
 
         .live-badge i { color: #ff635c; }
 
         #player-container {
-            border: 1px solid rgba(200, 244, 91, 0.26);
+            border: 1px solid rgba(244, 163, 64, 0.26);
             border-radius: 8px;
             background: #090d09;
-            box-shadow: 0 24px 64px -26px rgba(0, 0, 0, 0.95), 0 0 0 6px rgba(200, 244, 91, 0.025);
+            box-shadow: 0 24px 64px -26px rgba(0, 0, 0, 0.95), 0 0 0 6px rgba(244, 163, 64, 0.025);
         }
 
         .grid-panels { gap: 1rem; margin-top: 1rem; }
@@ -591,7 +618,7 @@
         }
 
         .info-card::before { background: var(--accent-primary); }
-        .info-card:hover { transform: translateY(-3px); border-color: rgba(200, 244, 91, 0.38); box-shadow: 0 16px 34px -24px rgba(200, 244, 91, 0.28); }
+        .info-card:hover { transform: translateY(-3px); border-color: rgba(244, 163, 64, 0.4); box-shadow: 0 16px 34px -24px rgba(244, 163, 64, 0.28); }
         .info-card h2 { justify-content: flex-start; margin-bottom: 1rem; letter-spacing: 1.2px; }
 
         .action-button {
@@ -604,19 +631,19 @@
             letter-spacing: 0;
         }
 
-        .action-button:hover { box-shadow: 0 8px 24px rgba(200, 244, 91, 0.18); }
+        .action-button:hover { box-shadow: 0 8px 24px rgba(244, 163, 64, 0.2); }
         .brand-footer { margin-top: 1rem; }
-        .brand-link { border-radius: 4px; background: transparent; border-color: rgba(200, 244, 91, 0.16); letter-spacing: 0; }
+        .brand-link { border-radius: 4px; background: transparent; border-color: rgba(244, 163, 64, 0.2); letter-spacing: 0; }
         .telegram-popup { border-radius: 10px; background: rgba(24, 34, 25, 0.98); }
-        .telegram-popup .joined-btn { border-radius: 5px; border-color: rgba(200, 244, 91, 0.26); }
+        .telegram-popup .joined-btn { border-radius: 5px; border-color: rgba(244, 163, 64, 0.26); }
 
         @media (max-width: 600px) {
             body { padding: 1rem 0.75rem; }
-            .stream-header { min-height: 156px; flex-direction: row; gap: 0.5rem; text-align: left; padding: 1.25rem; }
-            #sports-scene { width: 42%; right: 0; opacity: 0.78; }
-            .stream-header > a, .live-badge { z-index: 1; }
+            .stream-header { min-height: 156px; flex-direction: row; gap: 0.35rem; text-align: left; padding: 1rem 0.75rem; }
+            .stream-brand-copy { margin-left: 24%; }
             .stream-header h1 { font-size: 1.45rem; }
-            .live-badge { padding: 0.5rem 0.65rem; font-size: 0.65rem; }
+            .stream-brand-copy p { margin-top: 0.35rem; font-size: 0.5rem; letter-spacing: 0.16em; }
+            .live-badge { margin-right: 0; padding: 0.48rem 0.55rem; font-size: 0.58rem; gap: 0.35rem; }
             .grid-panels { grid-template-columns: 1fr; gap: 0.75rem; }
             .info-card { padding: 1.15rem; }
             .brand-link { font-size: 0.72rem; line-height: 1.5; }
@@ -632,8 +659,9 @@
         <div id="stream-content">
                 <div class="stream-header">
                     <canvas id="sports-scene" aria-hidden="true"></canvas>
-                    <a href="https://t.me/ritikwins" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                    <a class="stream-brand-copy" href="https://t.me/ritikwins" target="_blank" rel="noopener noreferrer">
                         <h1>@ritikwins</h1>
+                        <p>SPORTS LIVE STREAMS<br>&amp; UPDATES</p>
                     </a>
                     <span class="live-badge"><i class="fa-solid fa-circle"></i> LIVE NOW</span>
                 </div>
@@ -689,19 +717,19 @@
 
                 canvas.dataset.ready = 'true';
                 const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-                camera.position.set(0, 0, 5.4);
+                const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
+                camera.position.set(0, 0, 10);
 
                 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
                 renderer.setClearColor(0x000000, 0);
                 renderer.outputColorSpace = THREE.SRGBColorSpace;
-                scene.add(new THREE.HemisphereLight(0xe5ffd0, 0x243729, 2.2));
+                scene.add(new THREE.HemisphereLight(0xffe9ce, 0x243729, 2.2));
 
                 const keyLight = new THREE.DirectionalLight(0xffffff, 3.1);
                 keyLight.position.set(-2, 3, 4);
                 scene.add(keyLight);
-                const rimLight = new THREE.PointLight(0xc8f45b, 12, 12);
+                const rimLight = new THREE.PointLight(0xf4a340, 12, 12);
                 rimLight.position.set(2, -1, 2);
                 scene.add(rimLight);
 
@@ -737,6 +765,7 @@
                     stitch.lookAt(stitch.position.clone().multiplyScalar(2));
                     ball.add(stitch);
                 }
+                ball.scale.setScalar(1.25);
                 ball.rotation.set(0.35, -0.4, -0.24);
                 scene.add(ball);
 
@@ -744,8 +773,16 @@
                     const bounds = canvas.getBoundingClientRect();
                     if (!bounds.width || !bounds.height) return;
                     renderer.setSize(bounds.width, bounds.height, false);
-                    camera.aspect = bounds.width / bounds.height;
+                    const viewHeight = 4.2;
+                    const halfWidth = (viewHeight * bounds.width / bounds.height) / 2;
+                    camera.left = -halfWidth;
+                    camera.right = halfWidth;
+                    camera.top = viewHeight / 2;
+                    camera.bottom = -viewHeight / 2;
                     camera.updateProjectionMatrix();
+                    const compact = bounds.width / bounds.height < 3;
+                    ball.position.x = halfWidth * 0.7;
+                    ball.scale.setScalar(compact ? 1.02 : 1.25);
                 };
                 const resizeObserver = new ResizeObserver(resize);
                 resizeObserver.observe(canvas);
@@ -822,8 +859,9 @@
             contentDiv.innerHTML = `
                 <div class="stream-header">
                     <canvas id="sports-scene" aria-hidden="true"></canvas>
-                    <a href="https://t.me/Sports_LiveLinks" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                    <a class="stream-brand-copy" href="https://t.me/Sports_LiveLinks" target="_blank" rel="noopener noreferrer">
                         <h1>@ritikwins</h1>
+                        <p>SPORTS LIVE STREAMS<br>&amp; UPDATES</p>
                     </a>
                     <span class="live-badge"><i class="fa-solid fa-circle"></i> LIVE NOW</span>
                 </div>
