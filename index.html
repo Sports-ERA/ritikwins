@@ -487,12 +487,151 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
         .error-message h2 { color: #dc2626; margin-bottom: 1rem; }
+        :root {
+            color-scheme: dark;
+            --bg-deep: #111712;
+            --bg-gradient: linear-gradient(155deg, #111712 0%, #1a241b 54%, #101510 100%);
+            --glass-bg: rgba(27, 37, 28, 0.92);
+            --glass-border: rgba(200, 244, 91, 0.2);
+            --glass-shadow: 0 20px 54px -28px rgba(0, 0, 0, 0.9);
+            --accent-primary: #c8f45b;
+            --accent-glow: rgba(200, 244, 91, 0.23);
+            --accent-gradient: linear-gradient(110deg, #c8f45b, #89c63f);
+            --text-primary: #f4f5ed;
+            --text-secondary: #a4afa0;
+        }
+
+        body {
+            padding: 2rem clamp(1rem, 4vw, 3.5rem);
+            background-color: var(--bg-deep);
+            background-image: radial-gradient(ellipse at 50% -20%, rgba(119, 160, 75, 0.19), transparent 54%), var(--bg-gradient);
+        }
+
+        body::before {
+            background-image: linear-gradient(rgba(201, 231, 161, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 231, 161, 0.025) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
+            animation: none;
+        }
+
+        .container { max-width: 1180px; }
+
+        .stream-header {
+            min-height: 188px;
+            padding: 2rem clamp(1.5rem, 4vw, 3.5rem);
+            margin-bottom: 1.1rem;
+            border-radius: 12px;
+            border-color: rgba(200, 244, 91, 0.18);
+            background: linear-gradient(105deg, rgba(34, 47, 32, 0.98) 0%, rgba(25, 39, 27, 0.96) 55%, rgba(37, 55, 31, 0.88) 100%);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .stream-header::before {
+            background: repeating-linear-gradient(90deg, transparent 0 72px, rgba(200, 244, 91, 0.045) 73px 74px);
+            animation: none;
+            left: 0;
+        }
+
+        .stream-header::after {
+            content: '';
+            position: absolute;
+            right: 30%;
+            top: -55%;
+            width: 1px;
+            height: 210%;
+            background: rgba(200, 244, 91, 0.15);
+            transform: rotate(24deg);
+        }
+
+        .stream-header h1 {
+            font-size: clamp(1.7rem, 4vw, 2.55rem);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            color: var(--text-primary);
+            letter-spacing: 0;
+        }
+
+        #sports-scene {
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            right: 2%;
+            width: min(34%, 340px);
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .live-badge {
+            border-radius: 4px;
+            padding: 0.62rem 0.9rem;
+            background: rgba(200, 244, 91, 0.1);
+            color: var(--accent-primary);
+            border-color: rgba(200, 244, 91, 0.32);
+            box-shadow: none;
+            letter-spacing: 1.2px;
+        }
+
+        .live-badge i { color: #ff635c; }
+
+        #player-container {
+            border: 1px solid rgba(200, 244, 91, 0.26);
+            border-radius: 8px;
+            background: #090d09;
+            box-shadow: 0 24px 64px -26px rgba(0, 0, 0, 0.95), 0 0 0 6px rgba(200, 244, 91, 0.025);
+        }
+
+        .grid-panels { gap: 1rem; margin-top: 1rem; }
+
+        .info-card {
+            padding: 1.35rem 1.5rem;
+            border-radius: 8px;
+            text-align: left;
+            background: linear-gradient(140deg, rgba(30, 42, 31, 0.97), rgba(23, 32, 24, 0.94));
+            box-shadow: none;
+        }
+
+        .info-card::before { background: var(--accent-primary); }
+        .info-card:hover { transform: translateY(-3px); border-color: rgba(200, 244, 91, 0.38); box-shadow: 0 16px 34px -24px rgba(200, 244, 91, 0.28); }
+        .info-card h2 { justify-content: flex-start; margin-bottom: 1rem; letter-spacing: 1.2px; }
+
+        .action-button {
+            min-height: 48px;
+            padding: 0.85rem 1rem;
+            border-radius: 5px;
+            background: var(--accent-gradient);
+            color: #182112;
+            box-shadow: none;
+            letter-spacing: 0;
+        }
+
+        .action-button:hover { box-shadow: 0 8px 24px rgba(200, 244, 91, 0.18); }
+        .brand-footer { margin-top: 1rem; }
+        .brand-link { border-radius: 4px; background: transparent; border-color: rgba(200, 244, 91, 0.16); letter-spacing: 0; }
+        .telegram-popup { border-radius: 10px; background: rgba(24, 34, 25, 0.98); }
+        .telegram-popup .joined-btn { border-radius: 5px; border-color: rgba(200, 244, 91, 0.26); }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.75rem; }
+            .stream-header { min-height: 156px; flex-direction: row; gap: 0.5rem; text-align: left; padding: 1.25rem; }
+            #sports-scene { width: 42%; right: 0; opacity: 0.78; }
+            .stream-header > a, .live-badge { z-index: 1; }
+            .stream-header h1 { font-size: 1.45rem; }
+            .live-badge { padding: 0.5rem 0.65rem; font-size: 0.65rem; }
+            .grid-panels { grid-template-columns: 1fr; gap: 0.75rem; }
+            .info-card { padding: 1.15rem; }
+            .brand-link { font-size: 0.72rem; line-height: 1.5; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+        }
     </style>
 </head>
 <body cz-shortcut-listen="true">
     <main class="container">
         <div id="stream-content">
                 <div class="stream-header">
+                    <canvas id="sports-scene" aria-hidden="true"></canvas>
                     <a href="https://t.me/ritikwins" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
                         <h1>@ritikwins</h1>
                     </a>
@@ -540,6 +679,102 @@
         // --- DEFINE BANNER HTML CONSTANT ---
         const promoHTML = ``;
 
+        async function setupSportsScene() {
+            const canvas = document.getElementById('sports-scene');
+            if (!canvas || canvas.dataset.ready) return;
+
+            try {
+                const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js');
+                if (!canvas.isConnected) return;
+
+                canvas.dataset.ready = 'true';
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+                camera.position.set(0, 0, 5.4);
+
+                const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+                renderer.setClearColor(0x000000, 0);
+                renderer.outputColorSpace = THREE.SRGBColorSpace;
+                scene.add(new THREE.HemisphereLight(0xe5ffd0, 0x243729, 2.2));
+
+                const keyLight = new THREE.DirectionalLight(0xffffff, 3.1);
+                keyLight.position.set(-2, 3, 4);
+                scene.add(keyLight);
+                const rimLight = new THREE.PointLight(0xc8f45b, 12, 12);
+                rimLight.position.set(2, -1, 2);
+                scene.add(rimLight);
+
+                const ball = new THREE.Group();
+                ball.add(new THREE.Mesh(
+                    new THREE.SphereGeometry(1, 48, 32),
+                    new THREE.MeshPhysicalMaterial({ color: 0xb93128, roughness: 0.38, clearcoat: 0.65, clearcoatRoughness: 0.22 })
+                ));
+
+                const seamPoints = [];
+                for (let index = 0; index <= 180; index += 1) {
+                    const angle = (index / 180) * Math.PI * 2;
+                    seamPoints.push(new THREE.Vector3(
+                        Math.cos(angle) * 1.006,
+                        Math.sin(angle) * Math.cos(0.72) * 1.006,
+                        Math.sin(angle) * Math.sin(0.72) * 1.006
+                    ));
+                }
+                ball.add(new THREE.Mesh(
+                    new THREE.TubeGeometry(new THREE.CatmullRomCurve3(seamPoints), 180, 0.018, 6, false),
+                    new THREE.MeshStandardMaterial({ color: 0xf6dfbd, roughness: 0.72 })
+                ));
+
+                const stitchMaterial = new THREE.MeshStandardMaterial({ color: 0xf6dfbd, roughness: 0.8 });
+                for (let index = 0; index < 23; index += 1) {
+                    const angle = (index / 23) * Math.PI * 2;
+                    const stitch = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.012, 0.012), stitchMaterial);
+                    stitch.position.set(
+                        Math.cos(angle) * 1.008,
+                        Math.sin(angle) * Math.cos(0.72) * 1.008,
+                        Math.sin(angle) * Math.sin(0.72) * 1.008
+                    );
+                    stitch.lookAt(stitch.position.clone().multiplyScalar(2));
+                    ball.add(stitch);
+                }
+                ball.rotation.set(0.35, -0.4, -0.24);
+                scene.add(ball);
+
+                const resize = () => {
+                    const bounds = canvas.getBoundingClientRect();
+                    if (!bounds.width || !bounds.height) return;
+                    renderer.setSize(bounds.width, bounds.height, false);
+                    camera.aspect = bounds.width / bounds.height;
+                    camera.updateProjectionMatrix();
+                };
+                const resizeObserver = new ResizeObserver(resize);
+                resizeObserver.observe(canvas);
+                resize();
+
+                const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const clock = new THREE.Clock();
+                let animationFrame;
+                const render = () => {
+                    const elapsed = clock.getElapsedTime();
+                    ball.rotation.y = -0.4 + elapsed * 0.28;
+                    ball.rotation.x = 0.35 + Math.sin(elapsed * 0.65) * 0.045;
+                    ball.position.y = Math.sin(elapsed * 0.9) * 0.08;
+                    renderer.render(scene, camera);
+                    if (!reducedMotion) animationFrame = requestAnimationFrame(render);
+                };
+                render();
+
+                window.stopSportsScene = () => {
+                    cancelAnimationFrame(animationFrame);
+                    resizeObserver.disconnect();
+                    renderer.dispose();
+                    window.stopSportsScene = null;
+                };
+            } catch (error) {
+                console.warn('3D sports artwork could not be initialized.', error);
+            }
+        }
+
         async function initializeApp() {
             const popup = document.getElementById('telegramPopup');
             const shareButton = document.getElementById('shareButton');
@@ -550,6 +785,7 @@
             }
 
             setupPlayerFullscreen();
+            setupSportsScene();
 
             setTimeout(() => {
                 popup.style.display = 'block';
@@ -582,8 +818,10 @@
 
         function renderIframeUI(data) {
             const contentDiv = document.getElementById('stream-content');
+            window.stopSportsScene?.();
             contentDiv.innerHTML = `
                 <div class="stream-header">
+                    <canvas id="sports-scene" aria-hidden="true"></canvas>
                     <a href="https://t.me/Sports_LiveLinks" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
                         <h1>@ritikwins</h1>
                     </a>
@@ -618,6 +856,7 @@
                     </a>
                 </div>
             `;
+            setupSportsScene();
             setupPlayerFullscreen();
             document.getElementById('shareButton').addEventListener('click', copyAndShare);
         }
