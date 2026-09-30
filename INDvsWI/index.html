@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; frame-src https://dekhobhai.pages.dev https://*.pages.dev; connect-src 'self' https://allrounderid2.pages.dev; img-src 'self' data: https:; media-src 'self' blob: https:;">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; frame-src https://dekhobhai.pages.dev https://*.pages.dev; connect-src 'self' https://allrounderid2.pages.dev https://allrounder2-0.pages.dev https://jiotvpllive.cdn.jio.com; img-src 'self' data: https:; media-src 'self' blob: https:; worker-src 'self' blob:;">
     <style>
         :root {
             /* Dark Premium Theme */
@@ -172,6 +173,76 @@
             pointer-events: auto !important;
         }
 
+        #player-container video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .shaka-video-container { background-color: #000 !important; }
+
+        /* Stream status pill (matches the orange theme) */
+        .player-status {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            max-width: 82%;
+            padding: 0.9rem 1.3rem;
+            border-radius: 8px;
+            background: rgba(7, 19, 27, 0.94);
+            border: 1px solid rgba(244, 163, 64, 0.45);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-align: center;
+            line-height: 1.5;
+            box-shadow: 0 12px 34px rgba(0, 0, 0, 0.55);
+            pointer-events: none;
+        }
+
+        .player-status[hidden] { display: none; }
+        .player-status.is-error { border-color: rgba(239, 68, 68, 0.6); color: #fecaca; }
+
+        .player-status .status-spinner {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(244, 163, 64, 0.25);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: statusSpin 0.8s linear infinite;
+        }
+
+        .player-status .status-spinner[hidden] { display: none; }
+
+        @keyframes statusSpin { to { transform: rotate(360deg); } }
+
+        .player-status .player-retry {
+            pointer-events: auto;
+            border: 1px solid rgba(244, 163, 64, 0.55);
+            background: rgba(244, 163, 64, 0.14);
+            color: var(--accent-primary);
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            padding: 0.42rem 0.95rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.25s ease;
+        }
+
+        .player-status .player-retry[hidden] { display: none; }
+        .player-status .player-retry:hover { background: rgba(244, 163, 64, 0.3); }
+
         #player-container:fullscreen {
             width: 100vw;
             height: 100vh;
@@ -241,7 +312,7 @@
 
         .info-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 25px 50px -15px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 25px 50px -15px rgba(99, 102, 246, 0.5);
             border-color: rgba(139, 92, 246, 0.4);
         }
 
@@ -612,7 +683,7 @@
         <div id="stream-content">
                 <div class="stream-header">
                     <canvas id="sports-scene" aria-hidden="true"></canvas>
-                    <a class="stream-brand-copy" href="https://t.me/ritikwins" target="_blank" rel="noopener noreferrer">
+                    <a class="stream-brand-copy" href="https://t.me/Sports_LiveLinks" target="_blank" rel="noopener noreferrer">
                       <h1>INDIA VS WEST INDIES</h1>
                         <h1>@Ritikwins</h1>
                         <p>SPORTS LIVE STREAMS<br>&amp; UPDATES</p>
@@ -621,7 +692,14 @@
                 </div>
 
                 <div id="player-container">
-                    <iframe src="https://dekhobhai.pages.dev/HIN2/" style="width:100%; height:100%; border:0;" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen="" webkitallowfullscreen playsinline sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" referrerpolicy="no-referrer"></iframe>
+                    <video id="stream-video" autoplay muted playsinline preload="metadata"></video>
+
+                    <div class="player-status" id="playerStatus" hidden>
+                        <span class="status-spinner" id="playerSpinner"></span>
+                        <span id="playerStatusText">Loading stream&hellip;</span>
+                        <button class="player-retry" id="playerRetry" type="button" hidden>Retry</button>
+                    </div>
+
                     <button class="player-fullscreen-button" id="playerFullscreenButton" type="button" aria-label="Open player fullscreen" title="Fullscreen">
                         <i class="fa-solid fa-expand"></i>
                     </button>
@@ -630,7 +708,7 @@
                 <div class="grid-panels">
                     <div class="info-card">
                         <h2><i class="fa-brands fa-telegram"></i> Follow us for more updates</h2>
-                        <a href="https://t.me/ritikwins" target="_blank" rel="noopener noreferrer" class="action-button">
+                        <a href="https://t.me/Sports_LiveLinks" target="_blank" rel="noopener noreferrer" class="action-button">
                             <i class="fa-brands fa-telegram"></i> Join Telegram
                         </a>
                     </div>
@@ -658,7 +736,164 @@
         <button class="popup-button joined-btn" onclick="document.getElementById('telegramPopup').style.display='none'; document.body.classList.remove('popup-open');">I've Already Joined</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script>
     <script>
+        // ================= LIVE STREAM (same setup as reference) =================
+        const STREAM_CONFIG = {
+            streamUrl: 'https://jiotvpllive.cdn.jio.com//bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd',
+            keyId: 'bd1ea6a1c1fb5dcdb709434e0826bbc0',
+            key: 'f57f22cba32739ce7beb1fab3f3d060b',
+            cookieUrl: 'https://allrounder2-0.pages.dev/api/Hindi.json'
+        };
+
+        let streamPlayer = null;
+        let streamOverlay = null;
+        let streamCookie = '';
+
+        function showPlayerStatus(message, state) {
+            const status = document.getElementById('playerStatus');
+            const text = document.getElementById('playerStatusText');
+            const spinner = document.getElementById('playerSpinner');
+            const retry = document.getElementById('playerRetry');
+            if (!status || !text) return;
+            text.textContent = message;
+            status.hidden = false;
+            status.classList.toggle('is-error', state === 'error');
+            if (spinner) spinner.hidden = state === 'error';
+            if (retry) retry.hidden = state !== 'error';
+        }
+
+        function hidePlayerStatus() {
+            const status = document.getElementById('playerStatus');
+            if (status) status.hidden = true;
+        }
+
+        async function fetchStreamCookie() {
+            try {
+                const response = await fetch(STREAM_CONFIG.cookieUrl, { cache: 'no-store' });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const data = await response.json();
+                return data.cookie || '';
+            } catch (error) {
+                console.warn('Stream cookie fetch failed; continuing without it.', error);
+                return '';
+            }
+        }
+
+        async function loadStream(manifestUrl) {
+            if (!streamPlayer) return;
+            showPlayerStatus('Loading stream\u2026', 'loading');
+            // refresh the token on every (re)load, it expires quickly
+            streamCookie = await fetchStreamCookie();
+            try {
+                await streamPlayer.load(manifestUrl);
+                const video = document.getElementById('stream-video');
+                if (video) {
+                    const playPromise = video.play();
+                    if (playPromise && playPromise.catch) playPromise.catch(() => {});
+                }
+                hidePlayerStatus();
+            } catch (error) {
+                console.error('Stream load failed:', error);
+                showPlayerStatus('Stream unavailable right now.', 'error');
+            }
+        }
+
+        async function initStreamPlayer() {
+            const video = document.getElementById('stream-video');
+            const container = document.getElementById('player-container');
+            if (!video || !container) return;
+
+            if (typeof shaka === 'undefined') {
+                showPlayerStatus('Player library failed to load.', 'error');
+                return;
+            }
+
+            shaka.polyfill.installAll();
+            if (!shaka.Player.isBrowserSupported()) {
+                showPlayerStatus('This browser is not supported.', 'error');
+                return;
+            }
+
+            try {
+                streamPlayer = new shaka.Player();
+                await streamPlayer.attach(video);
+
+                streamOverlay = new shaka.ui.Overlay(streamPlayer, container, video);
+                streamOverlay.configure({
+                    addBigPlayButton: true,
+                    controlPanelElements: [
+                        'play_pause',
+                        'mute',
+                        'time_and_duration',
+                        'spacer',
+                        'quality',
+                        'picture_in_picture',
+                        'fullscreen'
+                    ],
+                    seekBarColors: {
+                        base: '#828282',
+                        buffered: '#ffc336',
+                        played: '#1fc7ff'
+                    }
+                });
+
+                streamPlayer.configure({
+                    drm: { clearKeys: { [STREAM_CONFIG.keyId]: STREAM_CONFIG.key } },
+                    manifest: { defaultPresentationDelay: 5 },
+                    streaming: {
+                        lowLatencyMode: true,
+                        bufferingGoal: 10,
+                        rebufferingGoal: 2,
+                        safeSeekOffset: 5
+                    }
+                });
+
+                const networkingEngine = streamPlayer.getNetworkingEngine();
+                if (networkingEngine) {
+                    networkingEngine.registerRequestFilter((type, request) => {
+                        if (!streamCookie) return;
+
+                        request.headers['Referer'] = 'https://www.jiotv.com/';
+                        request.headers['User-Agent'] = 'plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6';
+                        request.headers['Cookie'] = streamCookie;
+
+                        const token = streamCookie.startsWith('__hdnea__=') ? streamCookie.slice(10) : streamCookie;
+                        const isMediaRequest =
+                            type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
+                            type === shaka.net.NetworkingEngine.RequestType.SEGMENT;
+
+                        if (isMediaRequest && token && !request.uris[0].includes('__hdnea__')) {
+                            const separator = request.uris[0].includes('?') ? '&' : '?';
+                            request.uris[0] += separator + '__hdnea__=' + token;
+                        }
+                    });
+                }
+
+                streamPlayer.addEventListener('error', (event) => {
+                    console.error('Stream error:', event.detail);
+                    showPlayerStatus('Stream error. Tap retry to reload.', 'error');
+                });
+            } catch (error) {
+                console.error('Player init failed:', error);
+                showPlayerStatus('Player could not start.', 'error');
+                return;
+            }
+
+            // Browsers only allow audio after a real user gesture
+            const enableAudio = () => { if (video.muted) video.muted = false; };
+            ['pointerdown', 'click', 'touchstart', 'keydown'].forEach((eventName) => {
+                document.addEventListener(eventName, enableAudio, { capture: true, once: true, passive: true });
+            });
+
+            const retryButton = document.getElementById('playerRetry');
+            if (retryButton) {
+                retryButton.addEventListener('click', () => loadStream(STREAM_CONFIG.streamUrl));
+            }
+
+            await loadStream(STREAM_CONFIG.streamUrl);
+        }
+
         async function setupSportsScene() {
             const canvas = document.getElementById('sports-scene');
             if (!canvas || canvas.dataset.ready) return;
@@ -768,6 +1003,7 @@
 
             setupPlayerFullscreen();
             setupSportsScene();
+            initStreamPlayer();
 
             setTimeout(() => {
                 popup.style.display = 'block';
@@ -799,10 +1035,41 @@
         }
 
         function renderIframeUI(data) {
-            const iframe = document.querySelector('#player-container iframe');
-            if (iframe && typeof data.iframeSrc === 'string') {
-                iframe.src = data.iframeSrc;
+            const src = data && typeof data.iframeSrc === 'string' ? data.iframeSrc : '';
+            if (!src) return;
+
+            // Direct manifest links are played by the built-in player
+            if (/\.(mpd|m3u8)(\?|#|$)/i.test(src)) {
+                loadStream(src);
+                return;
             }
+
+            // Anything else keeps the old embedded-player behaviour
+            showIframeStream(src);
+        }
+
+        function showIframeStream(src) {
+            const container = document.getElementById('player-container');
+            const video = document.getElementById('stream-video');
+            if (!container) return;
+
+            if (streamPlayer) {
+                try { streamPlayer.unload(); } catch (error) { /* ignore */ }
+            }
+            if (video) video.style.display = 'none';
+            hidePlayerStatus();
+            if (container.querySelector('iframe')) return;
+
+            const frame = document.createElement('iframe');
+            frame.src = src;
+            frame.style.cssText = 'width:100%; height:100%; border:0;';
+            frame.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
+            frame.setAttribute('allowfullscreen', '');
+            frame.setAttribute('webkitallowfullscreen', '');
+            frame.setAttribute('playsinline', '');
+            frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+            frame.setAttribute('referrerpolicy', 'no-referrer');
+            container.insertBefore(frame, container.firstChild);
         }
 
         function setupPlayerFullscreen() {
@@ -883,4 +1150,3 @@
 
 </body>
 </html>
-
